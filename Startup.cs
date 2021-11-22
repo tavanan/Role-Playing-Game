@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Role_Playing_Game.Services.CharacterService;
+using AutoMapper;
 
 namespace Role_Playing_Game
 {
@@ -28,6 +29,7 @@ namespace Role_Playing_Game
         {
             services.AddControllers();
             services.AddScoped<ICharacterService, CharacterService>();
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
