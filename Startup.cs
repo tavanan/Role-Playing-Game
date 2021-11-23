@@ -12,6 +12,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Role_Playing_Game.Services.CharacterService;
 using AutoMapper;
+using Role_Playing_Game.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Role_Playing_Game
 {
@@ -27,6 +29,7 @@ namespace Role_Playing_Game
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
             services.AddScoped<ICharacterService, CharacterService>();
             services.AddAutoMapper(typeof(Startup));
