@@ -13,10 +13,7 @@ namespace Role_Playing_Game.Services.CharacterService
     public class CharacterService : ICharacterService
     {
 
-        private static List<Character> characters = new List<Character> {
-            new Character(),
-            new Character { Id = 1, Name = "San"}
-        };
+        
         private readonly IMapper _mapper;
         private readonly DataContext _context;
 
@@ -35,7 +32,7 @@ namespace Role_Playing_Game.Services.CharacterService
             Character character = _mapper.Map<Character>(newCharacter);
             await _context.Characters.AddAsync(character);
             await _context.SaveChangesAsync();
-            characters.Add(character);
+            
             serviceResponse.Data = (_context.Characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
             return serviceResponse;
         }
@@ -46,10 +43,11 @@ namespace Role_Playing_Game.Services.CharacterService
 
             try
             {
-                Character character = characters.First(c => c.Id == id);
-                characters.Remove(character);
-
-                serviceResponse.Data = (characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
+                Character character = await  _context.Characters.FirstAsync(c => c.Id == id);
+                _context.Characters.Remove(character);
+                await _context.SaveChangesAsync();
+                
+                serviceResponse.Data = (_context.Characters.Select(c => _mapper.Map<GetCharacterDto>(c))).ToList();
 
             }
             catch (Exception ex)
@@ -92,7 +90,7 @@ namespace Role_Playing_Game.Services.CharacterService
                 
                 _context.Characters.Update(character);
                 await _context.SaveChangesAsync();
-                
+
                 serviceResponse.Data = _mapper.Map<GetCharacterDto>(character);
 
             }
