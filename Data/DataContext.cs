@@ -10,7 +10,7 @@ namespace Role_Playing_Game.Data
             
         }
 
-        public DbSet<Character> Characters { get; set; }
+        public DbSet<Character> Characters { get; set; } 
         public DbSet<User> Users { get; set; }
     }
 }
